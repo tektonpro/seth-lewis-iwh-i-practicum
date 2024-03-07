@@ -29,7 +29,10 @@ app.get("/update-cobj", function (req, res) {
 // Make a POST request with the HTML form data to create a new CRM record.
 // After the CRM record is created, write a redirect back to the homepage.
 // * Code for Route 2 goes here
-
+app.post("/update-cobj", function (req, res) {
+  console.log(req.body);
+  res.sendStatus(200);
+});
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
 // * Code for Route 3 goes here
