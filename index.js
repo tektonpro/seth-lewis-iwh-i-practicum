@@ -24,8 +24,10 @@ app.get("/update-cobj", function (req, res) {
   });
 });
 // ✅ In the updates pug template, add a link “Return to the homepage” that links to the root route.
-// TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
+// TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
+// Make a POST request with the HTML form data to create a new CRM record.
+// After the CRM record is created, write a redirect back to the homepage.
 // * Code for Route 2 goes here
 
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
