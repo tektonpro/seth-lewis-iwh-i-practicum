@@ -33,9 +33,7 @@ app.get("/update-cobj", function (req, res) {
 // * Code for Route 2 goes here
 app.post("/update-cobj", async function (req, res) {
   // Test POST request
-  const name = req.body.Name;
-  const make = req.body.Make;
-  const model = req.body.Model;
+  const { name, make, model } = req.body;
   const formData = {
     title: name,
     body: `${make} - ${model}`,
