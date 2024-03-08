@@ -1,15 +1,18 @@
 //- ** This is a sample of a pug template and how it uses the data passed to it from index.js.
 
 doctype html
-html 
-    head 
-        title= `${title}`
-        meta(name="viewport" content="width=device-width, initial-scale=1")
-        link(rel="stylesheet", href="/css/style.css")
-    body    
-        h1 Contacts
-        .cards 
-            each contact in data
-                .card 
-                    h2.card__name #{contact.properties.firstname}  #{contact.properties.lastname}
-                    p.card__email #{contact.properties.email}
+html(lang="en")
+    head
+        title Getting Started With Hubspot OAuth
+    body
+        h1 Getting Started With HubSpot OAuth
+        if token
+            p Your account has these cool contacts:
+            ul
+                each contact in contacts
+                    li #{contact.properties.firstname}  #{contact.properties.lastname}
+        else
+            p You're not authenticated 
+            p Please install me #[a(href=`${authUrl}`) here]
+            P Update your records #[a(href="/update-cobj") here]
+            p The name of your last entry was #{name}
