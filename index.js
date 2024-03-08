@@ -2,8 +2,9 @@ const express = require("express");
 const axios = require("axios");
 const app = express();
 const queryString = require("querystring");
+const { header } = require("express/lib/request");
 
-let appTitle =
+const appTitle =
   "Update Custom Object Form | Integrating With HubSpot I Practicum";
 
 app.set("view engine", "pug");
@@ -14,8 +15,22 @@ app.use(express.json());
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
 const PRIVATE_APP_ACCESS = "";
 
-app.get("/", function (req, res) {
-  res.render("contacts", { name: req.app.submittedName });
+app.get("/", async function (req, res) {
+  const token = false;
+  if (token) {
+    try {
+      const posts = "https://jsonplaceholder.typicode.com/posts/3";
+      const headers = {
+        "Content-type": "application/json; charset=UTF-8",
+      };
+      const data = await axios.get(posts, headers);
+      res.render("homepage", { token, title: appTitle, data });
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    res.render("homepage");
+  }
 });
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
@@ -36,7 +51,7 @@ app.get("/update-cobj", function (req, res) {
 
 // * Code for Route 2 goes here
 app.post("/update-cobj", async function (req, res) {
-  // Test POST request
+  // TODO: Wire up POST call to custom object
   const { name, make, model } = req.body;
   const formData = {
     title: name,

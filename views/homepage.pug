@@ -1,0 +1,18 @@
+//- ** This is a sample of a pug template and how it uses the data passed to it from index.js.
+
+doctype html
+html(lang="en")
+    head
+        title Getting Started With Hubspot OAuth
+    body
+        h1 Getting Started With HubSpot OAuth
+        if token
+            p Here's the post data
+                ul
+                    each post in data
+                        li #{post.id}  
+                        li #{post.title} 
+                        li #{post.body}
+        else
+            p You're not authenticated 
+        P Update your records #[a(href="/update-cobj") here]
