@@ -1,30 +1,32 @@
+// Packages
+require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const app = express();
 const queryString = require("querystring");
 const { header } = require("express/lib/request");
 
-const appTitle =
+// Constants
+const APP_TITLE =
   "Update Custom Object Form | Integrating With HubSpot I Practicum";
-
+const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
+// App config
 app.set("view engine", "pug");
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
-const PRIVATE_APP_ACCESS = "";
-
+/** Routes */
 app.get("/", async function (req, res) {
-  const token = false;
-  if (token) {
+  if (PRIVATE_APP_ACCESS) {
+    const token = PRIVATE_APP_ACCESS;
     try {
       const posts = "https://jsonplaceholder.typicode.com/posts/3";
       const headers = {
         "Content-type": "application/json; charset=UTF-8",
       };
       const data = await axios.get(posts, headers);
-      res.render("homepage", { token, title: appTitle, data });
+      res.render("homepage", { token, title: APP_TITLE, data });
     } catch (error) {
       console.error(error);
     }
@@ -33,23 +35,12 @@ app.get("/", async function (req, res) {
   }
 });
 
-// TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
-
-// * Code for Route 1 goes here
-// ✅ Create a new pug template called updates in the views folder.
-// ✅ Render the updates template and pass along a page title called Update Custom Object Form | Integrating With HubSpot I Practicum.
 app.get("/update-cobj", function (req, res) {
   res.render("updates", {
     title: appTitle,
   });
 });
-// ✅ In the updates pug template, add a link “Return to the homepage” that links to the root route.
 
-// TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
-// Make a POST request with the HTML form data to create a new CRM record.
-// After the CRM record is created, write a redirect back to the homepage.
-
-// * Code for Route 2 goes here
 app.post("/update-cobj", async function (req, res) {
   // TODO: Wire up POST call to custom object
   const { name, make, model } = req.body;
@@ -73,9 +64,6 @@ app.post("/update-cobj", async function (req, res) {
     console.error(error);
   }
 });
-// TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
-
-// * Code for Route 3 goes here
 
 /** 
 * * This is sample code to give you a reference for how you should structure your calls. 

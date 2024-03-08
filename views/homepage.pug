@@ -7,12 +7,22 @@ html(lang="en")
     body
         h1 Getting Started With HubSpot OAuth
         if token
-            p Here's the post data
-                ul
-                    each post in data
-                        li #{post.id}  
-                        li #{post.title} 
-                        li #{post.body}
+            table(style='width:100%', border='1')
+                tr
+                    th Name
+                    th Condition
+                    th Year
+                    th Make
+                    th Model
+                    th VIN
+                tr
+                    td Ashby
+                    td New
+                    td 1981
+                    td DeLorean
+                    td DMC-12
+                    td WA1LFAFP4CA089425
+                    
         else
             p You're not authenticated 
         P Update your records #[a(href="/update-cobj") here]
