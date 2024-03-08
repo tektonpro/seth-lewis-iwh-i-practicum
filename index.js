@@ -29,31 +29,28 @@ app.get("/update-cobj", function (req, res) {
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 // Make a POST request with the HTML form data to create a new CRM record.
 // After the CRM record is created, write a redirect back to the homepage.
+
 // * Code for Route 2 goes here
-app.post("/update-cobj", async function (req, res) {
+app.post("/update-cobj", function (req, res) {
   // Test POST request
-  const name = req.body.name;
-  const make = req.body.make;
-  const model = req.body.model;
-  const formData = {
-    body: {
+  const name = req.body.Name;
+  const make = req.body.Make;
+  const model = req.body.Model;
+
+  fetch("https://jsonplaceholder.typicode.com/posts", {
+    method: "POST",
+    body: JSON.stringify({
       title: name,
       body: `${make} - ${model}`,
       userId: 1,
-    },
+    }),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-  };
-  try {
-    const response = await axios.post(
-      "https://jsonplaceholder.typicode.com/posts",
-      queryString.stringify(formData)
-    );
-    res.send(response.data);
-  } catch (error) {
-    console.error(error);
-  }
+  })
+    .then((response) => response.json())
+    .then((json) => res.json(json))
+    .catch((error) => console.error(error));
 });
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
