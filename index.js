@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
+const queryString = require("querystring");
 
 let appTitle =
   "Update Custom Object Form | Integrating With HubSpot I Practicum";
@@ -29,9 +30,30 @@ app.get("/update-cobj", function (req, res) {
 // Make a POST request with the HTML form data to create a new CRM record.
 // After the CRM record is created, write a redirect back to the homepage.
 // * Code for Route 2 goes here
-app.post("/update-cobj", function (req, res) {
-  console.log(req.body);
-  res.sendStatus(200);
+app.post("/update-cobj", async function (req, res) {
+  // Test POST request
+  const name = req.body.name;
+  const make = req.body.make;
+  const model = req.body.model;
+  const formData = {
+    body: {
+      title: name,
+      body: `${make} - ${model}`,
+      userId: 1,
+    },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  };
+  try {
+    const response = await axios.post(
+      "https://jsonplaceholder.typicode.com/posts",
+      queryString.stringify(formData)
+    );
+    res.send(response.data);
+  } catch (error) {
+    console.error(error);
+  }
 });
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 

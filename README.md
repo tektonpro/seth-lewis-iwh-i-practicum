@@ -37,4 +37,4 @@ To read the full directions, please go to the [practicum instructions](https://a
 
 ## List View of Test Account's Custom Object
 
-[Here](https://app.hubspot.com/contacts/44748473/objects/2-25309173/views/all/list)
+List view found [here](https://app.hubspot.com/contacts/44748473/objects/2-25309173/views/all/list)
