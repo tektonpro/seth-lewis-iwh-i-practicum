@@ -3,9 +3,9 @@
 doctype html
 html(lang="en")
     head
-        title Getting Started With Hubspot OAuth
+        title= title
     body
-        h1 Getting Started With HubSpot OAuth
+        h1 Car Collection
         if token
             table(style='width:100%', border='1')
                 tr
@@ -15,14 +15,14 @@ html(lang="en")
                     th Make
                     th Model
                     th VIN
-                tr
-                    td Ashby
-                    td New
-                    td 1981
-                    td DeLorean
-                    td DMC-12
-                    td WA1LFAFP4CA089425
-                    
+                each car in cars
+                    tr 
+                        td #{car.name}
+                        td #{car.condition}
+                        td #{car.year }
+                        td #{car.make}
+                        td #{car.model }
+                        td #{car.vin}
         else
             p You're not authenticated 
         P Update your records #[a(href="/update-cobj") here]

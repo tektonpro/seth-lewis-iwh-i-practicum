@@ -20,16 +20,33 @@ app.use(express.json());
 app.get("/", async function (req, res) {
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
+    const carsEndpoint = "https://api.hubapi.com/crm/v3/objects/cars/search";
+
+    // TO-DO: wrap in function
+    const data = JSON.stringify({
+      limit: "5",
+      properties: ["name", "condition", "year", "make", "model", "vin"],
+    });
+    const payload = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: carsEndpoint,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    };
+    const cars = [];
     try {
-      const posts = "https://jsonplaceholder.typicode.com/posts/3";
-      const headers = {
-        "Content-type": "application/json; charset=UTF-8",
-      };
-      const data = await axios.get(posts, headers);
-      res.render("homepage", { token, title: APP_TITLE, data });
+      const response = await axios(payload);
+      response.data.results.forEach((item) => {
+        cars.push(item.properties);
+      });
     } catch (error) {
       console.error(error);
     }
+    res.render("homepage", { token, title: APP_TITLE, cars });
   } else {
     res.render("homepage");
   }
@@ -37,7 +54,7 @@ app.get("/", async function (req, res) {
 
 app.get("/update-cobj", function (req, res) {
   res.render("updates", {
-    title: appTitle,
+    title: APP_TITLE,
   });
 });
 
