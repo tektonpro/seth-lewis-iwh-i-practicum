@@ -26,6 +26,12 @@ async function fetchCarRecords(token, limit) {
   const data = JSON.stringify({
     limit,
     properties: ["name", "condition", "year", "make", "model", "vin"],
+    sorts: [
+      {
+        propertyName: "hs_createdate",
+        direction: "DESCENDING",
+      },
+    ],
   });
   const payload = {
     method: "post",
@@ -51,9 +57,7 @@ async function fetchCarRecords(token, limit) {
 app.get("/", async function (req, res) {
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
-    if (app.locals.cars.length === 0) {
-      app.locals.cars = await fetchCarRecords(token, 5);
-    }
+    app.locals.cars = await fetchCarRecords(token, 5);
     res.render("homepage", { token, title: APP_TITLE, cars: app.locals.cars });
   } else {
     res.render("homepage");
@@ -69,20 +73,10 @@ app.get("/update-cobj", function (req, res) {
 app.post("/update-cobj", async function (req, res) {
   const { name, year, condition, make, model, vin } = req.body;
   const createUpdateCarsEndpoint = `https://api.hubapi.com/crm/v3/objects/${CARS_OBJ_ID}`;
-
-  let data = JSON.stringify({
-    properties: {
-      name,
-      condition,
-      year,
-      make,
-      model,
-      vin,
-    },
+  const data = JSON.stringify({
+    properties: { name, condition, year, make, model, vin },
   });
-
-  // TO-DO: Wrap both 'payload' objects in functions
-  let payload = {
+  const payload = {
     method: "post",
     maxBodyLength: Infinity,
     url: createUpdateCarsEndpoint,
@@ -95,6 +89,8 @@ app.post("/update-cobj", async function (req, res) {
 
   try {
     await axios(payload);
+    // After updating the record, clear the car records in "cache"
+    app.locals.cars = [];
     res.redirect("/");
   } catch (error) {
     console.error(error);
