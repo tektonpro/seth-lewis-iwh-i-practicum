@@ -57,7 +57,9 @@ async function fetchCarRecords(token, limit) {
 app.get("/", async function (req, res) {
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
-    app.locals.cars = await fetchCarRecords(token, 5);
+    if (req.header("Referer") === "http://localhost:3000/update-cobj") {
+      app.locals.cars = await fetchCarRecords(token, 5);
+    }
     res.render("homepage", { token, title: APP_TITLE, cars: app.locals.cars });
   } else {
     res.render("homepage");
