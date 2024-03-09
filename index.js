@@ -10,6 +10,8 @@ const { header } = require("express/lib/request");
 const APP_TITLE =
   "Update Custom Object Form | Integrating With HubSpot I Practicum";
 const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
+const CARS_OBJ_ID = "2-25309173";
+
 // App config
 app.set("view engine", "pug");
 app.use(express.static(__dirname + "/public"));
@@ -24,7 +26,7 @@ app.get("/", async function (req, res) {
 
     // TO-DO: wrap in function
     const data = JSON.stringify({
-      limit: "5",
+      limit: "10",
       properties: ["name", "condition", "year", "make", "model", "vin"],
     });
     const payload = {
@@ -59,27 +61,41 @@ app.get("/update-cobj", function (req, res) {
 });
 
 app.post("/update-cobj", async function (req, res) {
-  // TODO: Wire up POST call to custom object
-  const { name, make, model } = req.body;
-  const formData = {
-    title: name,
-    body: `${make} - ${model}`,
-    userId: 1,
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
+  const { name, year, condition, make, model, vin } = req.body;
+  const createUpdateCarsEndpoint = `https://api.hubapi.com/crm/v3/objects/${CARS_OBJ_ID}`;
+
+  let data = JSON.stringify({
+    properties: {
+      name,
+      condition,
+      year,
+      make,
+      model,
+      vin,
     },
+  });
+
+  // TO-DO: Wrap both 'payload' objects in functions
+  let payload = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: createUpdateCarsEndpoint,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+    },
+    data,
   };
 
-  try {
-    const responseData = await axios.post(
-      "https://jsonplaceholder.typicode.com/posts",
-      queryString.stringify(formData)
-    );
-    app.submittedName = responseData.data.title;
-    res.redirect("/");
-  } catch (error) {
-    console.error(error);
-  }
+  axios
+    .request(payload)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  res.redirect("/");
 });
 
 /** 

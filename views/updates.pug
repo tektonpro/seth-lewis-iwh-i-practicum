@@ -4,14 +4,30 @@ html
         title= `${title}`
         meta(name="viewport" content="width=device-width, initial-scale=1")
         link(rel="stylesheet", href="../public/css/style.css")
-    body    
-        form(action="#" method="post" style="margin-bottom:20px;")
-            label(for="name") Name:
-            input(type="text" id="name" name="name")
-            label(for="make") Make:
-            input(type="text" id="make" name="make")
-            label(for="model") Model:
-            input(type="text" id="model" name="model")
-            input(type="submit" value="Submit")
+    body
+        div  
+            form(action="#" method="post" style="display: flex;flex-direction:column;justify-content:center;align-items:baseline;")
+                label(for="name") Car Name/Nickname:
+                input(type="text" id="name" name="name")
+                //- TODO: set the radios inline
+                label Condition 
+                input#new(type='radio', name="condition", value='new')
+                label(for='new') New
+                input#used(type='radio', name='condition', value='used')
+                label(for='used') Used
+
+                label(for="year") Year:
+                input(type="text" id="year" name="year")
+
+                label(for="make") Make:
+                input(type="text" id="make" name="make")
+
+                label(for="model") Model:
+                input(type="text" id="model" name="model")
+
+                label(for="vin") VIN:
+                input(type="text" id="vin" name="vin")
+
+                input(type="submit" value="Submit" style="margin-top:10px;")
         div(style="margin-top:20px; width: 50%;")
             a(href='/') Return to the homepage
