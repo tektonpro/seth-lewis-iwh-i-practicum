@@ -9,12 +9,13 @@ html
             form(action="#" method="post" style="display: flex;flex-direction:column;justify-content:center;align-items:baseline;")
                 label(for="name") Car Name/Nickname:
                 input(type="text" id="name" name="name")
-                //- TODO: set the radios inline
-                label Condition 
-                input#new(type='radio', name="condition", value='new')
-                label(for='new') New
-                input#used(type='radio', name='condition', value='used')
-                label(for='used') Used
+                
+                div(style="margin-top:6px;")
+                    label Condition: 
+                    input#new(type='radio', name="condition", value='new')
+                    label(for='new') New
+                    input#used(type='radio', name='condition', value='used')
+                    label(for='used') Used
 
                 label(for="year") Year:
                 input(type="text" id="year" name="year")
