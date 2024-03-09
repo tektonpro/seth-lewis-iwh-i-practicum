@@ -17,16 +17,37 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Functions
+async function fetchCarRecords(token, limit) {
+  const carsEndpoint = "https://api.hubapi.com/crm/v3/objects/cars/search";
+  const data = JSON.stringify({
+    limit,
+    properties: ["name", "condition", "year", "make", "model", "vin"],
+  });
+  const payload = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: carsEndpoint,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    data,
+  };
+
+  try {
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 /** Routes */
 app.get("/", async function (req, res) {
-  // TO-DO: Retrieve new cars on redirect
-  // (currently the results from the previous call appear on the home page after redirection)
-
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
+    // TO-DO: move API call outside route
     const carsEndpoint = "https://api.hubapi.com/crm/v3/objects/cars/search";
 
-    // TO-DO: wrap in function
     const data = JSON.stringify({
       limit: "10",
       properties: ["name", "condition", "year", "make", "model", "vin"],
