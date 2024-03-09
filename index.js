@@ -17,6 +17,9 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Record Storage
+let cars = [];
+
 // Functions
 async function fetchCarRecords(token, limit) {
   const carsEndpoint = "https://api.hubapi.com/crm/v3/objects/cars/search";
@@ -48,31 +51,8 @@ async function fetchCarRecords(token, limit) {
 app.get("/", async function (req, res) {
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
-    // TO-DO: move API call outside route
-    const carsEndpoint = "https://api.hubapi.com/crm/v3/objects/cars/search";
-
-    const data = JSON.stringify({
-      limit: "10",
-      properties: ["name", "condition", "year", "make", "model", "vin"],
-    });
-    const payload = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: carsEndpoint,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data,
-    };
-    const cars = [];
-    try {
-      const response = await axios(payload);
-      response.data.results.forEach((item) => {
-        cars.push(item.properties);
-      });
-    } catch (error) {
-      console.error(error);
+    if (cars.length === 0) {
+      cars = await fetchCarRecords(token, 5);
     }
     res.render("homepage", { token, title: APP_TITLE, cars });
   } else {
