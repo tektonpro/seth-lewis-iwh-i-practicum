@@ -51,10 +51,10 @@ async function fetchCarRecords(token, limit) {
 app.get("/", async function (req, res) {
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
-    if (cars.length === 0) {
+    if (app.locals.cars.length === 0) {
       app.locals.cars = await fetchCarRecords(token, 5);
     }
-    res.render("homepage", { token, title: APP_TITLE, cars });
+    res.render("homepage", { token, title: APP_TITLE, cars: app.locals.cars });
   } else {
     res.render("homepage");
   }
