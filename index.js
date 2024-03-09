@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Record Storage
-let cars = [];
+app.locals.cars = [];
 
 // Functions
 async function fetchCarRecords(token, limit) {
@@ -52,7 +52,7 @@ app.get("/", async function (req, res) {
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
     if (cars.length === 0) {
-      cars = await fetchCarRecords(token, 5);
+      app.locals.cars = await fetchCarRecords(token, 5);
     }
     res.render("homepage", { token, title: APP_TITLE, cars });
   } else {
