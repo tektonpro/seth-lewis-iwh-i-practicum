@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const app = express();
-const queryString = require("querystring");
 const { header } = require("express/lib/request");
 
 // Constants
@@ -20,6 +19,9 @@ app.use(express.json());
 
 /** Routes */
 app.get("/", async function (req, res) {
+  // TO-DO: Retrieve new cars on redirect
+  // (currently the results from the previous call appear on the home page after redirection)
+
   if (PRIVATE_APP_ACCESS) {
     const token = PRIVATE_APP_ACCESS;
     const carsEndpoint = "https://api.hubapi.com/crm/v3/objects/cars/search";
@@ -87,15 +89,12 @@ app.post("/update-cobj", async function (req, res) {
     data,
   };
 
-  axios
-    .request(payload)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  res.redirect("/");
+  try {
+    await axios(payload);
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 /** 
