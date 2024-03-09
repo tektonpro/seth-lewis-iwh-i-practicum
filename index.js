@@ -28,7 +28,7 @@ app.get("/", async function (req, res) {
 
     // TO-DO: wrap in function
     const data = JSON.stringify({
-      limit: "10",
+      limit: "20",
       properties: ["name", "condition", "year", "make", "model", "vin"],
     });
     const payload = {
