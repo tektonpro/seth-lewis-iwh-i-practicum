@@ -36,6 +36,8 @@ async function fetchCarRecords(token, limit) {
   };
 
   try {
+    const response = await axios(payload);
+    return response.data.results.map((item) => item.properties);
   } catch (error) {
     console.error(error);
   }
